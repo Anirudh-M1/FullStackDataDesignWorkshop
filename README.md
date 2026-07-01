@@ -1,4 +1,4 @@
-# DFA Workshop — Full-Stack 
+# DFA Workshop - Complete Data Engineering Intro - Full-Stack 
 
 I created this workshop to help students and builders turn raw data into clear, meaningful, and actionable insights through design. In a world full of data, making sense of it is just as important as collecting it. Through my work in Design for America, I’ve seen how communicating data insights effectively can lead to definitive impact and efficient solutions. 
 
