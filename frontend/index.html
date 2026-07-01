@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anirudh Moholkar @ DFA UIUC — Data & Design Workshop</title>
+<meta name="description" content="A 45-minute hands-on introduction to data analysis and visualization with Python.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,500&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-logo" onclick="goHome()">
+    <div class="nav-logo-dot"></div>
+    Data &amp; Design
+  </div>
+  <div class="nav-steps">
+    <a class="nav-step" id="nav-home" onclick="goHome();return false" href="#">
+      <span class="nav-step-num">⌂</span> Home
+    </a>
+    <a class="nav-step" data-step="0" onclick="goTo(0);return false" href="#">
+      <span class="nav-step-num">1</span> Setup
+    </a>
+    <a class="nav-step" data-step="1" onclick="goTo(1);return false" href="#">
+      <span class="nav-step-num">2</span> Python basics
+    </a>
+    <a class="nav-step" data-step="2" onclick="goTo(2);return false" href="#">
+      <span class="nav-step-num">3</span> First chart
+    </a>
+    <a class="nav-step" data-step="3" onclick="goTo(3);return false" href="#">
+      <span class="nav-step-num">4</span> Real data
+    </a>
+    <a class="nav-step" data-step="4" onclick="goTo(4);return false" href="#">
+      <span class="nav-step-num">5</span> Final viz
+    </a>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <a class="nav-step" id="nav-about" onclick="goAbout();return false" href="#" style="gap:6px">
+      <span class="nav-step-num" style="font-size:11px">✦</span> About
+    </a>
+    <!-- <button class="nav-cta" onclick="goTo(0)">Start workshop</button> -->
+  </div>
+</nav>
+
+<div class="progress-footer">
+  <div class="progress-fill" id="progressFill" style="width:0%"></div>
+</div>
+
+<!-- ══════════════════════════════
+     HERO
+══════════════════════════════ -->
+<section id="hero-section">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-left">
+      <p class="hero-eyebrow">DFA @ UIUC · Python Workshop</p>
+      <p class="hero-eyebrow-sub">By: Anirudh Moholkar @ DFA UIUC</p>
+      <h1 class="hero-title">From zero<br>to <em>beautiful</em><br><span class="accent">data viz</span></h1>
+      <p class="hero-sub">A 45-minute hands-on introduction to data analysis and visualization with Python. No experience needed, just a Google account!</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="goTo(0)">
+          Begin workshop
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <a class="btn-ghost" href="https://colab.research.google.com" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M8 1.5A6.5 6.5 0 118 14.5 6.5 6.5 0 018 1.5z" stroke="currentColor" stroke-width="1.2"/><path d="M6 5l4 2.5L6 10V5z" fill="currentColor"/></svg>
+          Open Colab
+        </a>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-stat"><span class="hero-stat-val">45</span><span class="hero-stat-label">minutes total</span></div>
+        <div class="hero-meta-div"></div>
+        <div class="hero-stat"><span class="hero-stat-val">5</span><span class="hero-stat-label">sections</span></div>
+        <div class="hero-meta-div"></div>
+        <div class="hero-stat"><span class="hero-stat-val">0</span><span class="hero-stat-label">experience needed</span></div>
+        <div class="hero-meta-div"></div>
+        <div class="hero-stat"><span class="hero-stat-val">1</span><span class="hero-stat-label">stunning final chart</span></div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="slab-hint">drag to rotate</div>
+      <div class="dfa-scene">
+        <div class="dfa-slab" id="slab">
+          <div class="slab-face slab-front"><img src="images/img1.png" alt="DFA logo"> </div>
+          <div class="slab-face slab-back"></div>
+          <div class="slab-face slab-side slab-left"></div>
+          <div class="slab-face slab-side slab-right"></div>
+          <div class="slab-face slab-side slab-top"></div>
+          <div class="slab-face slab-side slab-bottom"></div>
+          <div class="pop-wrap pop-D"    id="popD"></div>
+          <div class="pop-wrap pop-F"    id="popF"></div>
+          <div class="pop-wrap pop-star" id="popStar"></div>
+          <div class="pop-wrap pop-A"    id="popA"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     SEC 0 · Setup
+══════════════════════════════ -->
+<!-- ══════════════════════════════
+     ABOUT SECTION
+══════════════════════════════ -->
+<section id="about-section">
+  <div class="about-hero">
+    <!-- Avatar -->
+    <div class="about-avatar-wrap">
+      <div class="about-avatar">
+<img src="images/img2.png" />
+      </div>
+      <div class="about-dfa-badge" style=" 
+        margin-top: 8px;
+        padding: 12px;
+        background: white;
+        border: 1px solid var(--border-light);
+        border-radius: 0p;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        transition: all 0.3s ease;
+      " onmouseover="this.style.borderColor='var(--rust)'; this.style.transform='translateY(-2px)'" 
+         onmouseout="this.style.borderColor='var(--border-light)'; this.style.transform='translateY(0)'">
+        
+          <img src="images/img3.png"
+               alt="DFA Logo" 
+               style="max-width: 90%; max-height: 90%; object-fit: contain; opacity: 0.9;">
+      </div>
+    </div>
+    <!-- Info -->
+    <div class="about-info">
+      <p class="about-eyebrow">Creator of this workshop</p>
+      <h1 class="about-name">Anirudh<br><em>Moholkar</em></h1>
+      <p class="about-role">
+        <strong>Director of Operations</strong> · Design for America @ UIUC<br>
+        Computer Engineering · University of Illinois Urbana-Champaign
+      </p>
+      <div class="about-tags">
+        <span class="about-tag">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13z"/><path d="M8 4v4l3 1.5"/></svg>
+          Class of 2027
+        </span>
+        <span class="about-tag">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s2-2 6-2 6 2 6 2"/><circle cx="8" cy="6" r="3"/></svg>
+          Urbana-Champaign, IL
+        </span>
+        <span class="about-tag">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5"/><path d="M1.5 6.5h13"/></svg>
+          Software Engineering, Data Science, Design, and more
+        </span>
+      </div>
+      <div class="about-links">
+        <a class="about-link primary" href="https://www.linkedin.com/in/amm21/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.5 1.5h-11A1 1 0 0 0 1.5 2.5v11a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-11a1 1 0 0 0-1-1zM5.5 12.5H3.5v-6h2v6zm-1-6.8a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm8 6.8h-2v-3.2c0-.8-.3-1.3-1-1.3s-1.1.5-1.1 1.3v3.2h-2v-6h2v.8a2.3 2.3 0 0 1 2-1c1.4 0 2.1.9 2.1 2.8v3.4z"/></svg>
+          LinkedIn
+        </a>
+        <!-- FIXED GitHub Icon -->
+        <a class="about-link" href="https://github.com/Anirudh-M1" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 
+            0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+            -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 
+            2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
+            0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 
+            2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 
+            2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 
+            1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
+            1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 
+            0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          GitHub
+</a>
+        </a>
+        <a class="about-link" href="mailto:amm21@illinois.edu">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5"/><path d="m1.5 4 6.5 5 6.5-5"/></svg>
+          Reach out!
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bio -->
+  <p class="about-description">
+    I created this workshop to help students and builders turn raw data into clear, meaningful, and actionable insights through design.
+    <br><br>
+    In a world full of data, making sense of the data is just as important as collecting the relevant data. Through my work in Design for America, I’ve seen how communicating data insights effectively can lead to definitive impact and efficient solutions. 
+    <br><br>
+    This workshop focuses on building those crucial skills: combining data, design, and storytelling to help you think critically about how information is structured, visualized, and understood.
+    <br><br>
+    By the end of this workshop, you will be able to transform complex raw datasets into intuitive visuals and compelling narratives that can drive real decisions.
+    <br><br>
+    I care deeply about making complex ideas feel simple, actionable, and impactful.
+  </p>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:48px;padding-bottom:60px">
+    <p style="font-size:12.5px;color:var(--ink-hint)">Data: UIUC GPA Dataset · Wade Fagen-Ulmschneider · DFA @ UIUC </p>
+    <p style="font-size:12.5px;color:var(--ink-hint)">By: Anirudh Moholkar - Director of Operations @ DFA UIUC</p>
+  </div>
+</section>
+
+<section class="section" id="sec-0">
+  <div class="section-header">
+    <div class="section-num-big">01</div>
+    <div>
+      <p class="section-eyebrow">Getting started · ~5 min</p>
+      <h2 class="section-title">Let's get <em>set up</em></h2>
+      <p class="section-desc">No software installs. We're using Google Colab, a free, browser-based Python environment used by researchers at Google, NASA, and every major data lab.</p>
+    </div>
+  </div>
+  <div class="time-chip">⏱ ~5 minutes · everyone does this together</div>
+  
+  <div class="steps-inline">
+    <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Open Google Colab</div><div class="step-desc">Go to <strong><a href="https://colab.research.google.com" target="_blank" style="color:var(--rust)">colab.research.google.com</a></strong> and sign in with your Google account.</div></div></div>
+    <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Create a new notebook</div><div class="step-desc">Click <strong>New notebook</strong>. You'll see a blank cell, that's where we write code.</div></div></div>
+    <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Learn to run a cell</div><div class="step-desc">Click the ▶ play button on the left edge of a cell, or press <strong>Shift + Enter</strong>.</div></div></div>
+    <div class="step-item"><div class="step-num">4</div><div><div class="step-title">Run the setup cell below</div><div class="step-desc">Copy the code below into your first cell and run it. Installs our visualization libraries in ~20 seconds.</div></div></div>
+  </div>
+  <div class="code-wrap">
+    <div class="code-label"><span>Cell 1 — Install &amp; import libraries</span></div>
+    <div class="code-block">
+      <div class="code-topbar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">setup.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-body"><span class="cm"># matplotlib  →  the world's most popular charting engine</span>
+<span class="cm"># seaborn     →  makes matplotlib beautiful automatically</span>
+<span class="fn">!</span>pip install matplotlib seaborn <span class="str">-q</span>
+
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="fn">print</span>(<span class="str">"✔️ All libraries loaded. Let's go!"</span>)</div>
+    </div>
+  </div>
+  <div class="callout"><span class="callout-icon">✔️</span><div><strong>You should see:</strong> A, "✔️ All libraries loaded." message. Once everyone has this, move on.</div></div>
+  <div class="callout info"><span class="callout-icon">💡</span><div><strong>No Google account?</strong> Use <a href="https://replit.com" target="_blank" style="color:var(--blue)">replit.com</a> its free, and no install needed.</div></div>
+  <div class="nav-row">
+    <span class="nav-row-info">Wait for everyone's ✔️ before continuing</span>
+    <div class="nav-row-btns">
+      <button class="btn-nav-next" onclick="goTo(1)">Python basics <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     SEC 1 · Python basics
+══════════════════════════════ -->
+<section class="section" id="sec-1">
+  <div class="section-header">
+    <div class="section-num-big">02</div>
+    <div>
+      <p class="section-eyebrow">The language · ~7 min</p>
+      <h2 class="section-title">Python in <em>7 minutes</em></h2>
+      <p class="section-desc">Three ideas: variables, lists, and DataFrames. Everything else follows from these.</p>
+    </div>
+  </div>
+  <div class="time-chip">⏱ ~7 minutes · follow along, then experiment</div>
+  <p class="prose">Python reads almost like English, designed to be understandable by humans first, computers second.</p>
+  
+  <div class="code-wrap">
+    <div class="code-label"><span>Cell 2 — Variables &amp; lists</span></div>
+    <div class="code-block">
+      <div class="code-topbar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">basics.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-body"><span class="cm"># A variable is a labelled box that stores a value</span>
+university   = <span class="str">"UIUC"</span>
+semester     = <span class="str">"Fall 2024"</span>
+total_courses = <span class="num">6</span>
+
+<span class="fn">print</span>(university)             <span class="cm"># → UIUC</span>
+<span class="fn">print</span>(total_courses * <span class="num">3</span>)     <span class="cm"># → 18  (credit hours)</span>
+<span class="fn">print</span>(<span class="str">f"Semester: </span>{semester}<span class="str">"</span>) <span class="cm"># → Semester: Fall 2024</span>
+
+<span class="cm"># A list holds multiple values in order</span>
+courses = [<span class="str">"ART 101"</span>, <span class="str">"CS 101"</span>, <span class="str">"MATH 231"</span>, <span class="str">"GD 210"</span>, <span class="str">"ID 310"</span>]
+grades  = [<span class="num">3.7</span>, <span class="num">3.3</span>, <span class="num">2.7</span>, <span class="num">4.0</span>, <span class="num">3.0</span>]
+
+<span class="fn">print</span>(courses[<span class="num">0</span>])             <span class="cm"># → "ART 101"  (counting starts at 0!)</span>
+<span class="fn">print</span>(<span class="fn">len</span>(grades))            <span class="cm"># → 5</span>
+<span class="fn">print</span>(<span class="fn">sum</span>(grades) / <span class="fn">len</span>(grades)) <span class="cm"># → 3.34  (semester GPA)</span></div>
+    </div>
+  </div>
+  
+  <div class="code-wrap">
+    <div class="code-label"><span>Cell 3 — The DataFrame</span></div>
+    <div class="code-block">
+      <div class="code-topbar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">dataframe.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-body"><span class="cm"># A DataFrame is a spreadsheet, simply columns of related data</span>
+<span class="cm"># Each row here is one UIUC student, each column is a fact about them</span>
+data = {
+    <span class="str">"name"</span>:     [<span class="str">"Aditya"</span>, <span class="str">"Jordan"</span>, <span class="str">"Sam"</span>, <span class="str">"Taylor"</span>, <span class="str">"River"</span>],
+    <span class="str">"major"</span>:    [<span class="str">"Ind. Design"</span>, <span class="str">"Graph. Design"</span>, <span class="str">"Arch."</span>, <span class="str">"Graph. Design"</span>, <span class="str">"Ind. Design"</span>],
+    <span class="str">"year"</span>:     [<span class="str">"Junior"</span>, <span class="str">"Sophomore"</span>, <span class="str">"Senior"</span>, <span class="str">"Junior"</span>, <span class="str">"Freshman"</span>],
+    <span class="str">"gpa"</span>:      [<span class="num">3.7</span>, <span class="num">3.2</span>, <span class="num">3.9</span>, <span class="num">3.5</span>, <span class="num">3.4</span>],
+    <span class="str">"credits"</span>:  [<span class="num">85</span>, <span class="num">45</span>, <span class="num">112</span>, <span class="num">78</span>, <span class="num">15</span>]
+}
+df = pd.DataFrame(data)
+<span class="fn">print</span>(df)
+<span class="fn">print</span>(df[<span class="str">"gpa"</span>].mean())   <span class="cm"># → avg GPA across all students</span>
+<span class="fn">print</span>(df.describe())</div>
+    </div>
+  </div>
+  <div class="callout"><span class="callout-icon">💡</span><div><strong>Mental model:</strong> Think of a DataFrame like a spreadsheet in Illustrator's data variables panel. Each column is a category of info, each row is one student. Almost everything in data analysis is transforming this table.</div></div>
+  <div class="nav-row">
+    <div class="nav-row-btns">
+      <button class="btn-nav-back" onclick="goTo(0)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 12l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Back</button>
+      <button class="btn-nav-next" onclick="goTo(2)">Your first chart <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     SEC 2 · First chart
+══════════════════════════════ -->
+<section class="section" id="sec-2">
+  <div class="section-header">
+    <div class="section-num-big">03</div>
+    <div>
+      <p class="section-eyebrow">Visualization · ~8 min</p>
+      <h2 class="section-title">Your first <em>chart</em></h2>
+      <p class="section-desc">Two lines of code. A real chart. Then we'll make it beautiful.</p>
+    </div>
+  </div>
+  <div class="time-chip">⏱ ~8 minutes · run each cell, discuss what changes</div>
+  
+  <div class="code-wrap">
+    <div class="code-label"><span>Cell 4 — The simplest possible chart</span></div>
+    <div class="code-block">
+      <div class="code-topbar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">first_chart.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-body">sns.set_theme(style=<span class="str">"whitegrid"</span>, palette=<span class="str">"muted"</span>)
+sns.barplot(data=df, x=<span class="str">"name"</span>, y=<span class="str">"gpa"</span>)
+plt.show()</div>
+    </div>
+  </div>
+  <p class="prose">Now add color to encode a second variable. Each visual property (position, size, color, shape) can carry a dimension of data.</p>
+  <div class="encoding-row">
+    <div class="encoding-pill"><div class="encoding-swatch" style="background:var(--rust-light)"></div>Position (x) → student name</div>
+    <div class="encoding-pill"><div class="encoding-swatch" style="background:var(--teal-light)"></div>Height (y) → GPA</div>
+    <div class="encoding-pill"><div class="encoding-swatch" style="background:var(--blue-light)"></div>Color → major</div>
+  </div>
+  <div class="code-wrap">
+    <div class="code-label"><span>Cell 5 — Color as information</span></div>
+    <div class="code-block">
+      <div class="code-topbar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">color_chart.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-body">fig, ax = plt.subplots(figsize=(<span class="num">8</span>, <span class="num">5</span>))
+sns.barplot(data=df, x=<span class="str">"name"</span>, y=<span class="str">"gpa"</span>,
+            hue=<span class="str">"major"</span>, palette=<span class="str">"Set2"</span>, ax=ax)
+ax.set_title(<span class="str">"GPA by student &amp; major"</span>, fontsize=<span class="num">14</span>)
+ax.set_xlabel(<span class="str">"Student"</span>)
+ax.set_ylabel(<span class="str">"GPA"</span>)
+ax.set_ylim(<span class="num">0</span>, <span class="num">4.0</span>)
+ax.spines[[<span class="str">"top"</span>,<span class="str">"right"</span>]].set_visible(<span class="kw">False</span>)
+plt.tight_layout()
+plt.show()</div>
+    </div>
+  </div>
+  <div class="callout"><span class="callout-icon">🎨</span><div><strong>Try this:</strong> Change <code>palette="Set2"</code> to <code>palette="pastel"</code> or <code>palette="dark"</code>. Re-run. Palette choice is one of the most consequential design decisions in data visualization.</div></div>
+  <div class="cards">
+    <div class="card"><div class="card-icon">📊</div><div class="card-title">Bar chart</div><div class="card-desc">Compare quantities across categories. Height = amount.</div></div>
+    <div class="card"><div class="card-icon">📈</div><div class="card-title">Line chart</div><div class="card-desc">Show change over time. The slope tells the story.</div></div>
+    <div class="card"><div class="card-icon">⭕</div><div class="card-title">Scatter plot</div><div class="card-desc">Show relationships between two variables. Each dot = one student.</div></div>
+    <div class="card"><div class="card-icon">🔥</div><div class="card-title">Heatmap</div><div class="card-desc">Show intensity across two categories. Color = value.</div></div>
+  </div>
+  <div class="nav-row">
+    <div class="nav-row-btns">
+      <button class="btn-nav-back" onclick="goTo(1)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 12l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Back</button>
+      <button class="btn-nav-next" onclick="goTo(3)">Real data <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     SEC 3 · Real data
+══════════════════════════════ -->
+<section class="section" id="sec-3">
+  <div class="section-header">
+    <div class="section-num-big">04</div>
+    <div>
+      <p class="section-eyebrow">Real-world data · ~8 min</p>
+      <h2 class="section-title">Working with <em>real data</em></h2>
+      <p class="section-desc">Real grade distribution data from UIUC's public records. Thousands of sections across every department. This is what data scientists actually work with.</p>
+    </div>
+  </div>
+  <div class="time-chip">⏱ ~8 minutes · explore, don't just run</div>
+  <p class="prose">UIUC publishes historical grade distribution data publicly. We'll pull it directly from the internet using pandas. Each row is one course section with how many students received each letter grade.</p>
+  
+  <div class="code-wrap">
+    <div class="code-label"><span>Cell 6 — Load &amp; explore real UIUC grade data</span></div>
+    <div class="code-block">
+      <div class="code-topbar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">load_data.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-body"><span class="cm"># Pull real UIUC grade distribution data (publicly available)</span>
+url = <span class="str">"https://raw.githubusercontent.com/wadefagen/datasets/master/gpa/uiuc-gpa-dataset.csv"</span>
+grades_df = pd.read_csv(url)
+
+<span class="fn">print</span>(grades_df.shape)           <span class="cm"># (rows, columns)</span>
+<span class="fn">print</span>(grades_df.head())
+<span class="fn">print</span>(grades_df[<span class="str">"Subject"</span>].value_counts().head(<span class="num">10</span>)) <span class="cm"># top 10 depts</span>
+<span class="fn">print</span>(grades_df.describe())</div>
+    </div>
+  </div>
+  <div class="callout warn"><span class="callout-icon">💡</span><div><strong>What you'll see:</strong> Each row is one course section from one semester. Columns include Subject, Number, Year, Term, and the count of students who received each grade (A+, A, A-, B+, etc.).</div></div>
+  <div class="code-wrap">
+    <div class="code-label"><span>Cell 7 — Scatter: class size vs A-rate across departments</span></div>
+    <div class="code-block">
+      <div class="code-topbar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">scatter.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-body"><span class="cm"># Focus on design-adjacent departments</span>
+depts = [<span class="str">"ART"</span>, <span class="str">"FAA"</span>, <span class="str">"ECE"</span>, <span class="str">"MATH"</span>, <span class="str">"ARCH"</span>]
+dept_colors = {
+    <span class="str">"ART"</span>:  <span class="str">"#E8593C"</span>,
+    <span class="str">"FAA"</span>:  <span class="str">"#3B8BD4"</span>,
+    <span class="str">"ECE"</span>:   <span class="str">"#1D9E75"</span>,
+    <span class="str">"MATH"</span>: <span class="str">"#BA7517"</span>,
+    <span class="str">"ARCH"</span>: <span class="str">"#7F77DD"</span>
+}
+
+<span class="cm"># Calculate total students and percentage who got an A</span>
+g = grades_df[grades_df[<span class="str">"Subject"</span>].isin(depts)].copy()
+g[<span class="str">"total"</span>] = g[[<span class="str">"A+"</span>,<span class="str">"A"</span>,<span class="str">"A-"</span>,<span class="str">"B+"</span>,<span class="str">"B"</span>,<span class="str">"B-"</span>,<span class="str">"C+"</span>,<span class="str">"C"</span>,<span class="str">"C-"</span>,<span class="str">"D+"</span>,<span class="str">"D"</span>,<span class="str">"D-"</span>,<span class="str">"F"</span>]].sum(axis=<span class="num">1</span>)
+g[<span class="str">"a_rate"</span>] = (g[<span class="str">"A+"</span>] + g[<span class="str">"A"</span>] + g[<span class="str">"A-"</span>]) / g[<span class="str">"total"</span>] * <span class="num">100</span>
+g = g[g[<span class="str">"total"</span>] >= <span class="num">10</span>].dropna()
+
+fig, ax = plt.subplots(figsize=(<span class="num">9</span>, <span class="num">6</span>))
+sns.scatterplot(
+    data=g,
+    x=<span class="str">"total"</span>,
+    y=<span class="str">"a_rate"</span>,
+    hue=<span class="str">"Subject"</span>,
+    style=<span class="str">"Subject"</span>,
+    palette=dept_colors,
+    alpha=<span class="num">0.7</span>, s=<span class="num">60</span>, ax=ax
+)
+ax.set_title(<span class="str">"UIUC · Class Size vs A-grade Rate by Dept"</span>)
+ax.set_xlabel(<span class="str">"Students in Section"</span>)
+ax.set_ylabel(<span class="str">"% Receiving A (A+/A/A-)"</span>)
+ax.spines[[<span class="str">"top"</span>,<span class="str">"right"</span>]].set_visible(<span class="kw">False</span>)
+plt.tight_layout()
+plt.show()</div>
+    </div>
+  </div>
+  <div class="callout"><span class="callout-icon">✨</span><div><strong>Notice:</strong> Do bigger classes have lower A-rates? Do design departments cluster differently from ECE or MATH? <strong>Try changing the list in <code>depts</code></strong> to include departments you're curious about, for example <code>"PHYS"</code>, <code>"ENGL"</code>, or <code>"MUS"</code>.</div></div>
+  <div class="nav-row">
+    <div class="nav-row-btns">
+      <button class="btn-nav-back" onclick="goTo(2)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 12l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Back</button>
+      <button class="btn-nav-next" onclick="goTo(4)">Final visualization <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     SEC 4 · Final viz
+══════════════════════════════ -->
+<section class="section" id="sec-4">
+  <div class="section-header">
+    <div class="section-num-big">05</div>
+    <div>
+      <p class="section-eyebrow">The capstone · ~12 min</p>
+      <h2 class="section-title">The <em>finale</em></h2>
+      <p class="section-desc">A four-panel publication-quality figure exploring UIUC grade distributions. The kind you see in research papers and data journalism. Yours to download.</p>
+    </div>
+  </div>
+  <div class="time-chip">⏱ ~12 minutes · read the code before running it</div>
+  <div class="finale-badge">★ &nbsp;Capstone piece!! Save &amp; share this one</div>
+  <p class="prose">Read through the entire code first. Every section is commented. By the time you run it, you should understand every line.</p>
+  
+  <div class="code-wrap">
+    <div class="code-label"><span>Cell 8 — The final publication-quality figure</span></div>
+    <div class="code-block">
+      <div class="code-topbar"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">final_visualization.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <div class="code-body"><span class="cm"># ── Setup ────────────────────────────────────────────────────────</span>
+DEPT_COLORS = {
+    <span class="str">"ART"</span>:  <span class="str">"#E8593C"</span>,   <span class="cm"># rust — art dept</span>
+    <span class="str">"FAA"</span>:  <span class="str">"#3B8BD4"</span>,   <span class="cm"># blue — fine & applied arts</span>
+    <span class="str">"ECE"</span>:   <span class="str">"#1D9E75"</span>,   <span class="cm"># teal — computer engineering</span>
+    <span class="str">"MATH"</span>: <span class="str">"#BA7517"</span>,   <span class="cm"># amber — math</span>
+    <span class="str">"ARCH"</span>: <span class="str">"#7F77DD"</span>    <span class="cm"># purple — architecture</span>
+}
+DEPTS = <span class="fn">list</span>(DEPT_COLORS.keys())
+
+<span class="cm"># Reload and prep the full UIUC dataset</span>
+url = <span class="str">"https://raw.githubusercontent.com/wadefagen/datasets/master/gpa/uiuc-gpa-dataset.csv"</span>
+df_all = pd.read_csv(url)
+df_all[<span class="str">"total"</span>] = df_all[[<span class="str">"A+"</span>,<span class="str">"A"</span>,<span class="str">"A-"</span>,<span class="str">"B+"</span>,<span class="str">"B"</span>,<span class="str">"B-"</span>,<span class="str">"C+"</span>,<span class="str">"C"</span>,<span class="str">"C-"</span>,<span class="str">"D+"</span>,<span class="str">"D"</span>,<span class="str">"D-"</span>,<span class="str">"F"</span>]].sum(axis=<span class="num">1</span>)
+df_all[<span class="str">"a_rate"</span>] = (df_all[<span class="str">"A+"</span>] + df_all[<span class="str">"A"</span>] + df_all[<span class="str">"A-"</span>]) / df_all[<span class="str">"total"</span>] * <span class="num">100</span>
+df_d = df_all[df_all[<span class="str">"Subject"</span>].isin(DEPTS)].dropna(subset=[<span class="str">"a_rate"</span>,<span class="str">"total"</span>])
+df_d = df_d[df_d[<span class="str">"total"</span>] >= <span class="num">10</span>]
+
+sns.set_theme(style=<span class="str">"white"</span>, font_scale=<span class="num">0.9</span>)
+
+<span class="cm"># ── 2×2 grid layout ──────────────────────────────────────────────</span>
+fig = plt.figure(figsize=(<span class="num">14</span>, <span class="num">10</span>))
+gs  = fig.add_gridspec(<span class="num">2</span>, <span class="num">2</span>, hspace=<span class="num">0.45</span>, wspace=<span class="num">0.35</span>)
+ax1 = fig.add_subplot(gs[<span class="num">0</span>, <span class="num">0</span>])
+ax2 = fig.add_subplot(gs[<span class="num">0</span>, <span class="num">1</span>])
+ax3 = fig.add_subplot(gs[<span class="num">1</span>, <span class="num">0</span>])
+ax4 = fig.add_subplot(gs[<span class="num">1</span>, <span class="num">1</span>])
+
+<span class="cm"># A · Scatter: class size vs A-rate</span>
+sns.scatterplot(data=df_d, x=<span class="str">"total"</span>, y=<span class="str">"a_rate"</span>,
+    hue=<span class="str">"Subject"</span>, style=<span class="str">"Subject"</span>, palette=DEPT_COLORS,
+    alpha=<span class="num">0.55</span>, s=<span class="num">40</span>, ax=ax1, legend=<span class="kw">False</span>)
+ax1.set_title(<span class="str">"A · Class size vs A-grade rate"</span>, fontweight=<span class="str">"bold"</span>)
+ax1.set_xlabel(<span class="str">"Students in section"</span>); ax1.set_ylabel(<span class="str">"% receiving A"</span>)
+ax1.spines[[<span class="str">"top"</span>,<span class="str">"right"</span>]].set_visible(<span class="kw">False</span>)
+
+<span class="cm"># B · Violin: A-rate distribution per dept</span>
+sns.violinplot(data=df_d, x=<span class="str">"Subject"</span>, y=<span class="str">"a_rate"</span>,
+    palette=DEPT_COLORS, inner=<span class="str">"quartile"</span>, ax=ax2)
+ax2.set_title(<span class="str">"B · A-rate distribution by department"</span>, fontweight=<span class="str">"bold"</span>)
+ax2.set_xlabel(<span class="str">"Department"</span>); ax2.set_ylabel(<span class="str">"% receiving A"</span>)
+ax2.spines[[<span class="str">"top"</span>,<span class="str">"right"</span>]].set_visible(<span class="kw">False</span>)
+
+<span class="cm"># C · Heatmap: avg A-rate by year × dept</span>
+pivot = df_d.pivot_table(values=<span class="str">"a_rate"</span>,
+    index=<span class="str">"Year"</span>, columns=<span class="str">"Subject"</span>, aggfunc=<span class="str">"mean"</span>)
+sns.heatmap(pivot, annot=<span class="kw">True</span>, fmt=<span class="str">".1f"</span>, cmap=<span class="str">"YlOrRd"</span>,
+    linewidths=<span class="num">0.5</span>, ax=ax3)
+ax3.set_title(<span class="str">"C · Avg A-rate by year &amp; department"</span>, fontweight=<span class="str">"bold"</span>)
+ax3.set_xlabel(<span class="str">"Department"</span>); ax3.set_ylabel(<span class="str">"Year"</span>)
+
+<span class="cm"># D · Histogram: A-rate frequency per dept</span>
+<span class="kw">for</span> dept, col <span class="kw">in</span> DEPT_COLORS.items():
+    sub = df_d[df_d[<span class="str">"Subject"</span>] == dept]
+    ax4.hist(sub[<span class="str">"a_rate"</span>], bins=<span class="num">20</span>, alpha=<span class="num">0.5</span>,
+             color=col, label=dept, edgecolor=<span class="str">"white"</span>, linewidth=<span class="num">0.5</span>)
+ax4.set_title(<span class="str">"D · How often each dept gives A-grades"</span>, fontweight=<span class="str">"bold"</span>)
+ax4.set_xlabel(<span class="str">"% of class receiving A"</span>); ax4.set_ylabel(<span class="str">"Number of sections"</span>)
+ax4.legend(title=<span class="str">"Dept"</span>)
+ax4.spines[[<span class="str">"top"</span>,<span class="str">"right"</span>]].set_visible(<span class="kw">False</span>)
+
+<span class="cm"># ── Titles &amp; save ─────────────────────────────────────────────────</span>
+fig.suptitle(<span class="str">"UIUC Grade Distribution Analysis · ART / FAA / ECE / MATH / ARCH"</span>,
+    fontsize=<span class="num">16</span>, fontweight=<span class="str">"bold"</span>, y=<span class="num">1.02</span>)
+fig.text(<span class="num">0.5</span>, <span class="num">0.985</span>,
+    <span class="str">"Data: UIUC GPA Dataset (Wade Fagen-Ulmschneider) · Visualization by [your name]"</span>,
+    ha=<span class="str">"center"</span>, fontsize=<span class="num">9</span>, color=<span class="str">"#999"</span>)
+
+plt.savefig(<span class="str">"uiuc_grade_analysis.png"</span>, dpi=<span class="num">200</span>, bbox_inches=<span class="str">"tight"</span>, facecolor=<span class="str">"white"</span>)
+plt.show()
+<span class="fn">print</span>(<span class="str">"✔️ Saved! Files panel → right-click → Download"</span>)</div>
+    </div>
+  </div>
+  <div class="callout"><span class="callout-icon">💾</span><div><strong>To download:</strong> Click the <strong>folder icon</strong> in Colab's left sidebar → find <code>uiuc_grade_analysis.png</code> → right-click → Download. That's a 200 DPI image ready for print or portfolio.</div></div>
+  <div class="divider"></div>
+  <h3 style="font-family:var(--serif);font-size:22px;font-weight:500;margin-bottom:20px">Bonus challenges</h3>
+  <div class="bonus-grid">
+    <div class="bonus-card"><div class="bonus-card-tag">Challenge 1</div><div class="bonus-card-title">Your department</div><div class="bonus-card-desc">Add your own major's department code to <code>DEPT_COLORS</code> and <code>DEPTS</code> e.g. <code>"GD"</code> or <code>"ID"</code>. Pick a color for it and re-run.</div></div>
+    <div class="bonus-card"><div class="bonus-card-tag">Challenge 2</div><div class="bonus-card-title">Change the metric</div><div class="bonus-card-desc">In panels A and D, swap <code>"a_rate"</code> for <code>"total"</code> to visualize class sizes instead. How does the picture change?</div></div>
+    <div class="bonus-card"><div class="bonus-card-tag">Challenge 3</div><div class="bonus-card-title">Credit yourself</div><div class="bonus-card-desc">Replace <code>[your name]</code> in the subtitle with your actual name. Put your name on it, you did this!!</div></div>
+    <div class="bonus-card"><div class="bonus-card-tag">Challenge 4</div><div class="bonus-card-title">Filter by semester</div><div class="bonus-card-desc">Add <code>df_d = df_d[df_d["Term"] == "Fall"]</code> after the filter line and re-run. Do Fall and Spring differ?</div></div>
+  </div>
+  <div class="complete-banner">
+    <div class="complete-title"><em>You</em> created that.</div>
+    <p class="complete-sub">From zero experience to a real analysis of your own university's grade data in under 45 minutes. The same tools are used in research labs, design studios, and newsrooms worldwide.</p>
+    <div class="complete-actions">
+      <button class="btn-primary" onclick="goHome()" style="background:var(--cream);color:var(--ink)">Start over</button>
+      <a class="btn-ghost" href="https://seaborn.pydata.org/examples/index.html" target="_blank" style="color:var(--cream);border-color:rgba(247,243,237,.3)">Explore more ↗</a>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:48px;padding-bottom:60px">
+    <p style="font-size:12.5px;color:var(--ink-hint)">Data: UIUC GPA Dataset · Wade Fagen-Ulmschneider · DFA @ UIUC</p>
+    <p style="font-size:12.5px;color:var(--ink-hint)">By: Anirudh Moholkar - Director of Operations @ DFA UIUC</p>
+  </div>
+  <div class="nav-row">
+    <div class="nav-row-btns">
+      <button class="btn-nav-back" onclick="goTo(3)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 12l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Back</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     JAVASCRIPT
+══════════════════════════════ -->
+<!-- ══ FLOATING NARRATOR ══════════════════════════════════════ -->
+<audio id="aud-ap-cell1" src="audio/ap-cell1.mp3" preload="auto"></audio>
+<audio id="aud-ap-cell2" src="audio/ap-cell2.mp3" preload="auto"></audio>
+<audio id="aud-ap-cell3" src="audio/ap-cell3.mp3" preload="auto"></audio>
+<audio id="aud-ap-cell4" src="audio/ap-cell4.mp3" preload="auto"></audio>
+<audio id="aud-ap-cell67" src="audio/ap-cell67.mp3" preload="auto"></audio>
+<audio id="aud-ap-final" src="audio/ap-final.mp3" preload="auto"></audio>
+<div class="narrator-float" id="narratorFloat">
+  <div class="narrator-header" id="narratorHeader">
+    <span class="narrator-icon">🎙</span>
+    <span class="narrator-title">Anirudh</span>
+    <span class="narrator-track-lbl" id="narratorTrackLbl"></span>
+    <button class="narrator-min-btn" id="narratorMinBtn" title="Minimise">−</button>
+  </div>
+  <div class="narrator-body">
+    <div class="narrator-controls">
+      <button class="narrator-play-btn" id="narratorPlayBtn">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5a.5.5 0 0 1 .765-.424l10 5.5a.5.5 0 0 1 0 .848l-10 5.5A.5.5 0 0 1 3 13.5z"/></svg>
+      </button>
+      <div class="narrator-prog-wrap">
+        <div class="narrator-bar" id="narratorBar"><div class="narrator-fill" id="narratorFill"></div></div>
+        <div class="narrator-time"><span id="narratorCur">00:00</span><span id="narratorDur">--:--</span></div>
+      </div>
+    </div>
+    <div class="narrator-subs" id="narratorSubs"></div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
